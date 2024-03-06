@@ -57,13 +57,6 @@ SELECT * FROM act_re_procdef;
 
 代码演示:
 ```java
-import org.flowable.engine.ProcessEngine;
-import org.flowable.engine.ProcessEngineConfiguration;
-import org.flowable.engine.RepositoryService;
-import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
-import org.flowable.engine.repository.Deployment;
-import org.junit.jupiter.api.Test;
-
 /**
  * @author CY
  * @date 24/3/6 16:12
@@ -130,13 +123,6 @@ logging:
 
 代码演示:
 ```java
-import org.flowable.engine.ProcessEngine;
-import org.flowable.engine.RepositoryService;
-import org.flowable.engine.repository.Deployment;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
 @SpringBootTest
 class FlowableDemoApplicationTests {
 
@@ -157,7 +143,6 @@ class FlowableDemoApplicationTests {
                 .deploy();
         System.out.println("id: " + deploy.getId());
     }
-
 }
 ```
 
@@ -175,12 +160,6 @@ SELECT * FROM act_ru_task;
 ```
 
 ```java
-import org.flowable.engine.RuntimeService;
-import org.junit.jupiter.api.Test;
-import org.flowable.engine.runtime.ProcessInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
 @SpringBootTest
 class FlowableDemoApplicationTests {
 
@@ -204,6 +183,5 @@ class FlowableDemoApplicationTests {
         String processId = "first_flow:1:f9780755-dbc4-11ee-9811-c8e265d125f9";
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(processId);
     }
-
 }
 ```
