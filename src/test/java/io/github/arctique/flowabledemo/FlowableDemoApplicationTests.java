@@ -3,32 +3,39 @@ package io.github.arctique.flowabledemo;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
+import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 class FlowableDemoApplicationTests {
 
     @Autowired
     ProcessEngine processEngine;
-
     @Autowired
     RepositoryService repositoryService;
-
     @Autowired
     RuntimeService runtimeService;
+    @Autowired
+    TaskService taskService;
 
+    /**
+     * Spring环境下的应用, 部署流程到数据库
+     */
     @Test
     void deployFlow() {
         // 可以使用容器注入
         // RepositoryService repositoryService = processEngine.getRepositoryService();
         Deployment deploy = repositoryService.createDeployment()
                 // 可以同时部署多个流程
-                .addClasspathResource("process/base/first_flow.bpmn20.xml")
-                .name("Spring的第一个流程图")
+                .addClasspathResource("process/base/leave_process.bpmn20.xml")
+                .name("请假流程")
                 .deploy();
         System.out.println("id: " + deploy.getId());
     }
@@ -47,8 +54,30 @@ class FlowableDemoApplicationTests {
     void startFlow() {
         // String processKey = "first_flow";
         // runtimeService.startProcessInstanceByKey(processKey);
-        String processId = "first_flow:1:f9780755-dbc4-11ee-9811-c8e265d125f9";
+        String processId = "leave_process:1:8156d66a-dbd6-11ee-8606-c8e265d125f9";
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(processId);
     }
 
+    /**
+     * 根据用户查看代办信息
+     */
+    @Test
+    void findFlow() {
+        // 任务实例操作是通过TaskService来实现的
+        // TaskService taskService = processEngine.getTaskService();
+
+        // 获取到act_ru_task中assignee字段是zhangsan的记录
+        List<Task> list = taskService.createTaskQuery().taskAssignee("zhangsan").list();
+        for (Task task : list) {
+            System.out.println(task.getId());
+        }
+    }
+
+    /**
+     * 任务审批
+     */
+    @Test
+    void completeTask() {
+        taskService.complete("9d5e6f24-dbd6-11ee-bc78-c8e265d125f9");
+    }
 }
