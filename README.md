@@ -47,6 +47,12 @@
 + `act_re_deployment` 流程部署表, 记录这次部署的行为
 + `act_re_procdef` 流程定义表, 记录这次部署动作对应的流程定义信息
 
+```sql
+SELECT * FROM act_ge_bytearray;
+SELECT * FROM act_re_deployment;
+SELECT * FROM act_re_procdef;
+```
+
 ### 在非Spring环境下部署
 
 代码演示:
@@ -150,6 +156,53 @@ class FlowableDemoApplicationTests {
                 .name("Spring的第一个流程图")
                 .deploy();
         System.out.println("id: " + deploy.getId());
+    }
+
+}
+```
+
+## 启动流程
+
+流程启动后:
++ `act_hi_procinst` 每启动一个流程实例, 就会在这个表中维护一条记录
++ `act_ru_execution` 记录流程的分支
++ `act_ru_task` 表记录的是当前待办的记录信息
+
+```sql
+SELECT * FROM act_hi_procinst;
+SELECT * FROM act_ru_execution;
+SELECT * FROM act_ru_task;
+```
+
+```java
+import org.flowable.engine.RuntimeService;
+import org.junit.jupiter.api.Test;
+import org.flowable.engine.runtime.ProcessInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FlowableDemoApplicationTests {
+
+    @Autowired
+    RuntimeService runtimeService;
+
+    /**
+     * 启动流程
+     * 两种方式启动一个流程:
+     * 1.根据流程定义id启动流程实例
+     * 2.根据流程定义key启动流程实例
+     *
+     * 需要注意的是:
+     * id是在流程定义表中动态维护的, key是创建流程图的时候自定义的. key需要保证唯一
+     * 推荐使用id启动流程
+     */
+    @Test
+    void startFlow() {
+        // String processKey = "first_flow";
+        // runtimeService.startProcessInstanceByKey(processKey);
+        String processId = "first_flow:1:f9780755-dbc4-11ee-9811-c8e265d125f9";
+        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processId);
     }
 
 }
