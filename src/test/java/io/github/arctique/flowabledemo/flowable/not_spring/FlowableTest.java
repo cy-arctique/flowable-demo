@@ -1,4 +1,4 @@
-package io.github.arctique.flowabledemo.flowable;
+package io.github.arctique.flowabledemo.flowable.not_spring;
 
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.ProcessEngineConfiguration;
@@ -32,7 +32,7 @@ public class FlowableTest {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         Deployment deploy = repositoryService.createDeployment()
                 // 可以同时部署多个流程
-                .addClasspathResource("process/base/first_flow.bpmn20.xml")
+                .addClasspathResource("processes/base/first_flow.bpmn20.xml")
                 .name("第一个流程图")
                 .deploy();
         System.out.println("deploy.getId(): " + deploy.getId());

@@ -56,6 +56,7 @@ SELECT * FROM act_re_procdef;
 ### 在非Spring环境下部署
 
 代码演示:
+
 ```java
 /**
  * @author CY
@@ -82,7 +83,7 @@ public class FlowableTest {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         Deployment deploy = repositoryService.createDeployment()
                 // 可以同时部署多个流程
-                .addClasspathResource("process/base/first_flow.bpmn20.xml")
+                .addClasspathResource("processes/base/first_flow.bpmn20.xml")
                 .name("第一个流程图")
                 .deploy();
         System.out.println("deploy.getId(): " + deploy.getId());
@@ -122,7 +123,9 @@ logging:
 ```
 
 代码演示:
+
 ```java
+
 @SpringBootTest
 class FlowableDemoApplicationTests {
 
@@ -138,7 +141,7 @@ class FlowableDemoApplicationTests {
         // RepositoryService repositoryService = processEngine.getRepositoryService();
         Deployment deploy = repositoryService.createDeployment()
                 // 可以同时部署多个流程
-                .addClasspathResource("process/base/first_flow.bpmn20.xml")
+                .addClasspathResource("processes/base/first_flow.bpmn20.xml")
                 .name("Spring的第一个流程图")
                 .deploy();
         System.out.println("id: " + deploy.getId());
