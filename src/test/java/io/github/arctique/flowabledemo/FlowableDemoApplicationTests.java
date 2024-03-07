@@ -5,6 +5,7 @@ import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
+import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,45 @@ class FlowableDemoApplicationTests {
                 .name("请假流程")
                 .deploy();
         System.out.println("id: " + deploy.getId());
+    }
+
+    /**
+     * 流程的挂起与激活
+     * 针对的是流程定义
+     */
+    @Test
+    void suspendedActivity() {
+        String processId = "first_flow:1:4";
+        // 查看流程是否是挂起状态
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(processId)
+                .singleResult();
+        boolean suspended = processDefinition.isSuspended();
+        System.out.println(suspended);
+        // SUSPENSION_STATE_ 1激活 2挂起
+        // 挂起之后的流程不能启动流程`startFlow()`
+        if (suspended) {
+            repositoryService.activateProcessDefinitionById(processId);
+        } else {
+            repositoryService.suspendProcessDefinitionById(processId);
+        }
+    }
+
+    /**
+     * 流程实例的挂起与激活
+     */
+    @Test
+    void suspendedProcessInstance() {
+        String processInstanceId = "";
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(processInstanceId)
+                .singleResult();
+        boolean suspended = processInstance.isSuspended();
+        if (suspended) {
+            runtimeService.activateProcessInstanceById(processInstanceId);
+        } else {
+            runtimeService.suspendProcessInstanceById(processInstanceId);
+        }
     }
 
     /**
