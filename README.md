@@ -186,6 +186,46 @@ class FlowableDemoApplicationTests {
 }
 ```
 
+当启动一个流程实例后, 会在`act_ru_` 对应的表结构中操作, 运行实例涉及的表结构共10张:
++ `act_ru_deadletter_job` 正在运行的任务表
++ `act_ru_event_subscr` 运行时事件
++ `act_ru_execution` 运行时流程执行实例
++ `act_ru_history_job` 历史作业表
++ `act_ru_identitylink` 运行时用户关系信息
++ `act_ru_job` 运行时作业表
++ `act_ru_suspended_job` 暂停作业表
++ `act_ru_task` 运行时任务表
++ `act_ru_timer_job` 定时作业表
++ `act_ru_variable` 运行时变量表
+
+启动一个流程实例的时候涉及到的表有:
++ `act_ru_execution` 运行时流程执行实例
++ `act_ru_identitylink` 运行时用户关系信息
++ `act_ru_task` 运行时任务表
++ `act_ru_variable` 运行时变量表
+
+### 流程完毕
+
+一个具体的流程审批完成后相关的数据如下:
+
+首先, 以下四张表对应的数据都没有了, 也就是这个流程已经不是运行中的流程了
+
++ `act_ru_execution` 运行时流程执行实例
++ `act_ru_identifylink` 运行时用户关系信息
++ `act_ru_task` 运行时任务表
++ `act_ru_variable` 运行时变量表
+
+然后在对应的历史表中可以看到相关的信息
+
++ `act_hi_actinst` 历史的流程实例
++ `act_hi_attachment` 历史的流程附件
++ `act_hi_comment` 历史的说明性信息
++ `act_hi_detail` 历史的流程运行中的细节信息
++ `act_hi_identifylink` 历史的流程运行过程中用户关系
++ `act_hi_procinst` 历史的流程实例
++ `act_hi_taskinst` 历史的任务实例
++ `act_hi_variable` 历史的流程运行中的变量信息
+
 ## 流程的挂起与激活 & 流程实例的挂起与激活
 
 ```java
